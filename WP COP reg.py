@@ -26,6 +26,37 @@ T_lift = df['T_lift']
 T_sa = df['Senke-Aus']
 COP = df['COP']
 
+# Überprüfen, ob NaN-Werte in den Daten vorhanden sind
+if np.isnan(T_lift).any() or np.isnan(T_sa).any() or np.isnan(COP).any():
+    nan_indices_T_lift = np.where(np.isnan(T_lift))[0]
+    nan_indices_T_sa = np.where(np.isnan(T_sa))[0]
+    nan_indices_COP = np.where(np.isnan(COP))[0]
+
+    error_message = 'Die Daten enthalten NaN-Werte. Bitte entfernen Sie diese und führen Sie das Programm erneut aus.\n'
+
+    if nan_indices_T_lift.size > 0:
+        error_message += f"NaN-Werte gefunden in T_lift an den Indizes: {nan_indices_T_lift}\n"
+    if nan_indices_T_sa.size > 0:
+        error_message += f"NaN-Werte gefunden in T_sa an den Indizes: {nan_indices_T_sa}\n"
+    if nan_indices_COP.size > 0:
+        error_message += f"NaN-Werte gefunden in COP an den Indizes: {nan_indices_COP}\n"
+
+    raise ValueError(error_message)
+
+if np.isinf(T_lift).any() or np.isinf(T_sa).any() or np.isinf(COP).any():
+    inf_indices_T_lift = np.where(np.isinf(T_lift))[0]
+    inf_indices_T_sa = np.where(np.isinf(T_sa))[0]
+    inf_indices_COP = np.where(np.isinf(COP))[0]
+
+    error_message = 'Die Daten enthalten Inf-Werte. Bitte entfernen Sie diese und führen Sie das Programm erneut aus.\n'
+
+    if inf_indices_T_lift.size > 0:
+        error_message += f"Inf-Werte gefunden in T_lift an den Indizes: {inf_indices_T_lift}\n"
+    if inf_indices_T_sa.size > 0:
+        error_message += f"Inf-Werte gefunden in T_sa an den Indizes: {inf_indices_T_sa}\n"
+    if inf_indices_COP.size > 0:
+        error_message += f"Inf-Werte gefunden in COP an den Indizes: {inf_indices_COP}\n"
+
 # Fit der Daten an die Gleichung mit curve_fit
 initial_guess = [100, 1, -1, 0]  # Initiale Schätzwerte für die Parameter
 fit_params, _ = curve_fit(cop_eq, (T_lift,T_sa), COP, initial_guess)
@@ -159,6 +190,7 @@ print(results.summary())
 # Angenommen, COP und y_pred sind Ihre Pandas-Serien mit den tatsächlichen und vorhergesagten Werten
 COP = pd.Series([COP])
 y_pred = pd.Series([predicted_COP])
+y_true = pd.Series([COP])
 
 
 

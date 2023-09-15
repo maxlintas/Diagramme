@@ -146,7 +146,8 @@ for i in range(degree_x1 + 1):
 function_term = f'{intercept:.2f} + '
 function_term += ' + '.join([f'{coef:.2f} * {poly_feature_names[i]}' for i, coef in enumerate(coefficients)])
 
-print(f'Funktionsterm des Polynommodells: {function_term}')
+print(f'Funktionsterm des Polynommodells: Spez. Investk. = {function_term}')
+print('Mit x1 = Senken-Austritts-Temperatur und x2 = max. Leistung')
 
 
 '''Plotting the surface'''
@@ -200,11 +201,11 @@ y_pred = model.predict(x_poly)
 
 # R-Quadrat-Wert berechnen
 r2 = r2_score(y, y_pred)
-print(f'R-Quadrat-Wert: {r2}')
+print(f'R²-Wert: {r2}')
 
 # MSE berechnen
 mse = mean_squared_error(y, y_pred)
-print(f'Mittlerer quadratischer Fehler: {mse}')
+print(f'Mittlerer quadratischer Fehler (MSE): {mse}')
 
 # Residuen berechnen
 residuals = y - y_pred
